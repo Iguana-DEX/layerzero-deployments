@@ -1,0 +1,22 @@
+{
+  "name": "erc20permit",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "hardhat": "^2.16.1"
+  },
+  "dependencies": {
+    "@layerzerolabs/lz-evm-oapp-v2": "^2.0.25",
+    "@nomicfoundation/hardhat-toolbox": "^2.0.2",
+    "@openzeppelin/contracts": "^4.9.3",
+    "dotenv": "^16.4.5",
+    "ethers": "5.7.2"
+  }
+}
