@@ -4,7 +4,7 @@
 // You can also run a script with `npx hardhat run <script>`. If you do that, Hardhat
 // will compile your contracts, add the Hardhat Runtime Environment's members to the
 // global scope, and execute the script.
-const { formatEther } = require('ethers/lib/utils');
+const { writeFileSync } = require('fs');
 const hre = require('hardhat');
 
 const endpointIds = {
@@ -42,30 +42,46 @@ const lzEndpointAddresses = {
 async function main() {
   const name = 'Iguana Token';
   const symbol = 'IGN';
-  console.log('Network name: ' + hre.network.name);
-  const lzEndpointAddress = lzEndpointAddresses[hre.network.name];
+  const lzEndpointAddress = lzEndpointAddresses[networkName];
   const owner = '0x7a2d40F9c3B4c5ff1f6a7549E24aaA3F94c1b3BE'; // DevAccount
+
+  const networkName = hre.network.name;
+  console.log('Network name: ' + networkName);
 
   const Token = await hre.ethers.getContractFactory('IGNToken');
 
-  const overrides = {
-    gasPrice: 10000000000000, // Can set this >= to the number read from Ganache window
-    gasLimit: 67219750, // Use the same gasLimit as read from Ganache window (or a bit higher if still having issue)
-  };
+  // const overrides = {
+  //   gasPrice: 100000000000, // Can set this >= to the number read from Ganache window
+  //   gasLimit: 6721975, // Use the same gasLimit as read from Ganache window (or a bit higher if still having issue)
+  // };
   const token = await Token.deploy(
     name,
     symbol,
     lzEndpointAddress,
-    owner,
-    overrides
+    owner
+    // overrides
   );
 
-  totalSupply = await token.totalSupply;
-  decimals = await token.decimals();
-  totalSupply /= 10 ** decimals;
+  const tokenAddress = await token.address;
+  const tokenSymbol = await token.symbol();
+  const totalSupply = await token.totalSupply();
+  const decimals = await token.decimals();
+  const formattedTotalSupply = totalSupply / (10 ** decimals).toString();
 
   console.log(
-    `${token.symbol} token deployed at ${token.address} with ${totalSupply} total supply.`
+    `${tokenSymbol} token deployed at ${tokenAddress} with ${formattedTotalSupply} total supply.`
+  );
+
+  // Write the address to a file.
+  writeFileSync(
+    `./deployments/${networkName}.json`,
+    JSON.stringify(
+      {
+        IGNToken: tokenAddress,
+      },
+      null,
+      2
+    )
   );
 }
 
