@@ -34,8 +34,14 @@ npx hardhat run --network etherlinkTestnet scripts/deploy.js
 You will find the DEPLOYED_CONTRACT_ADDRESS of the contract you just deployed in the
 'deployments' folder in addition to the command line.
 
-### 4) Finally, verify the contract on the referenced explorer
+### 4) Verify the contract on the referenced explorer
 
 ```sh
 npx hardhat verify --network etherlinkTestnet --constructor-args scripts/deployArgs.js DEPLOYED_CONTRACT_ADDRESS
+```
+
+### 5) Call the setPeer() function on the OFT you deployed to connect it to other deployments.
+
+```sh
+targetNetworkName=bscTestnet npx hardhat run --network etherlinkTestnet scripts/setPeer.js
 ```

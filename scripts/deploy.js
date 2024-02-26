@@ -14,7 +14,7 @@ const endpointIds = {
   polygonMumbai: '40109',
   arbitrumSepolia: '40231',
   optimismSepolia: '40232',
-  etherlinkTestnet: '10239',
+  etherlinkTestnet: '40239',
   mainnet: '30101',
   bsc: '30102',
   avalanche: '30106',
@@ -30,7 +30,7 @@ const lzEndpointAddresses = {
   polygonMumbai: '0x6edce65403992e310a62460808c4b910d972f10f',
   arbitrumSepolia: '0x6edce65403992e310a62460808c4b910d972f10f',
   optimismSepolia: '0x6edce65403992e310a62460808c4b910d972f10f',
-  etherlinkTestnet: '0x2cA20802fd1Fd9649bA8Aa7E50F0C82b479f35fe',
+  etherlinkTestnet: '0xec28645346D781674B4272706D8a938dB2BAA2C6',
   mainnet: '0x1a44076050125825900e736c501f859c50fe728c',
   bsc: '0x1a44076050125825900e736c501f859c50fe728c',
   avalanche: '0x1a44076050125825900e736c501f859c50fe728c',
@@ -39,13 +39,14 @@ const lzEndpointAddresses = {
   optimisticEthereum: '0x1a44076050125825900e736c501f859c50fe728c',
 };
 
+const networkName = hre.network.name;
+
 async function main() {
   const name = 'Iguana Token';
   const symbol = 'IGN';
   const lzEndpointAddress = lzEndpointAddresses[networkName];
   const owner = '0x7a2d40F9c3B4c5ff1f6a7549E24aaA3F94c1b3BE'; // DevAccount
 
-  const networkName = hre.network.name;
   console.log('Network name: ' + networkName);
 
   const Token = await hre.ethers.getContractFactory('IGNToken');
