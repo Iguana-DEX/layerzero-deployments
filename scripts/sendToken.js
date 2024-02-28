@@ -32,10 +32,10 @@ async function main() {
     etherlinkTestnet: etherlinkTestnetDeployments.IGNToken,
     bscTestnet: bscTestnetDeployments.IGNToken,
   };
-  const [ owner ] = await hre.ethers.getSigners();
+  const [ owner ] = await hre.ethers.getSigners(); 
 
   console.log(
-    `Calling Estimate gas before send on your ${networkName} OFT for ${targetNetworkName} network. ${formatBytes32String(owner.address)}`
+    `Calling Estimate gas before send on your ${networkName} OFT to ${targetNetworkName} network.`
   );
 
   const Token = await hre.ethers.getContractFactory('IGNToken');
@@ -57,8 +57,20 @@ async function main() {
   );
 
   console.log(`Your send is estimated at ${estimatedGas.nativeFee} gas amount in native gas token and ${estimatedGas.lzTokenFee} gas amount in ZRO token.`);
+
+  console.log(`Sending the tokens from ${networkName} to ${targetNetworkName}...`);
+
+  // Send tokens
+  const tx = await token.send(
+    sendParam,
+    estimatedGas, // messaging fee
+    owner.address, // refund address
+    {value: estimatedGas.nativeFee}
+  );
+
+  console.log(`See the token transfer here: https://testnet.layerzeroscan.com/tx/${tx.hash}`)
 }
 
 main()
-  .then(() => console.log('Deployment complete'))
+  .then(() => console.log('Transaction complete'))
   .catch((error) => console.error('Error deploying contract:', error));

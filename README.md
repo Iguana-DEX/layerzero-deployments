@@ -23,7 +23,7 @@ The repo uses npm for the management of packages/dependencies.
 npm install
 ```
 
-### 3) Prepare the repo and the dependencies
+### 3) Deploy the OFT token
 
 The below command will compile any contract if needed before deployment.
 
@@ -44,4 +44,10 @@ npx hardhat verify --network etherlinkTestnet --constructor-args scripts/deployA
 
 ```sh
 targetNetworkName=bscTestnet npx hardhat run --network etherlinkTestnet scripts/setPeer.js
+```
+
+### 6) Estimate gas and send OFT
+For the moment, only bsc to etherlink work. This is due to non finished setup on the EndpointV2 on Etherlink.
+```sh
+targetNetworkName=etherlinkTestnet npx hardhat run --network bscTestnet scripts/setPeer.js
 ```
