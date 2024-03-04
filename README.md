@@ -47,7 +47,7 @@ targetNetworkName=bscTestnet npx hardhat run --network etherlinkTestnet scripts/
 ```
 
 ### 6) Estimate gas and send OFT
-For the moment, only bsc to etherlink work. This is due to non finished setup on the EndpointV2 on Etherlink.
+
 ```sh
-targetNetworkName=etherlinkTestnet npx hardhat run --network bscTestnet scripts/setPeer.js
+targetNetworkName=etherlinkTestnet npx hardhat run --network bscTestnet scripts/sendToken.js
 ```
