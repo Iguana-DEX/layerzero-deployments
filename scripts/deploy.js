@@ -41,11 +41,27 @@ const lzEndpointAddresses = {
 
 const networkName = hre.network.name;
 
+async function verify (contractAddress, args) {
+  try {
+    await hre.run("verify:verify", {
+      address: contractAddress,
+      constructorArguments: args,
+    });
+  } catch (e) {
+    if (e.message.toLowerCase().includes("already verified")) {
+      console.log("Already verified!");
+    } else {
+      console.log(e);
+    }
+  }
+}
+
 async function main() {
   const name = 'Iguana Token';
   const symbol = 'IGN';
   const lzEndpointAddress = lzEndpointAddresses[networkName];
-  const owner = '0x7a2d40F9c3B4c5ff1f6a7549E24aaA3F94c1b3BE'; // DevAccount
+  // const owner = '0x7a2d40F9c3B4c5ff1f6a7549E24aaA3F94c1b3BE'; // DevAccount
+  const [ owner ] = await hre.ethers.getSigners();
 
   console.log('Network name: ' + networkName);
 
@@ -59,7 +75,7 @@ async function main() {
     name,
     symbol,
     lzEndpointAddress,
-    owner
+    owner.address
     // overrides
   );
 
@@ -84,6 +100,13 @@ async function main() {
       2
     )
   );
+
+  // verify the contract
+  if (networkName !== "hardhat" && networkName !== "localhost") {
+    console.log("Verify contract...");
+    token.deployTransaction.wait(6);
+    await verify(token.address, [name, symbol, lzEndpointAddress, owner.address]);
+  }
 }
 
 main()
