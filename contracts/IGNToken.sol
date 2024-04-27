@@ -7,12 +7,14 @@ import "@openzeppelin/contracts/token/ERC20/extensions/draft-ERC20Permit.sol";
 
 contract IGNToken is OFT, ERC20Permit {
     constructor(
-        string memory _name, // token name
-        string memory _symbol, // token symbol
+        string memory _name,
+        string memory _symbol,
         address _lzEndpoint, // LayerZero Endpoint address
         address _owner // token owner
     ) OFT(_name, _symbol, _lzEndpoint, _owner) Ownable() ERC20Permit(_name) {
-        // your contract logic here
-        _mint(msg.sender, 1_000_000_000 ether); // mints 1bn tokens to the deployer
+        // check if the chain is etherlinkTestnet
+        if (block.chainid == 128123) {
+            _mint(msg.sender, 1_000_000_000 ether); // mints 1bn tokens to the deployer
+        }
     }
 }
